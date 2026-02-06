@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Premium Key Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+}
+
+.container {
+  max-width: 420px;
+  margin: 100px auto;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+p {
+  opacity: 0.85;
+  font-size: 15px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 30px;
+  padding: 15px 35px;
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(0,114,255,0.6);
+}
+
+.footer {
+  margin-top: 30px;
+  font-size: 12px;
+  opacity: 0.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Premium Key Generator</h1>
+  <p>Generate your access key by completing a simple verification step.</p>
+
+  <!-- SHORTENER LINK HERE -->
+  <a class="btn" href="PASTE_YOUR_SHORTENER_LINK_HERE">
+    Generate Key
+  </a>
+
+  <div class="footer">
+    Secure • Fast • Free
+  </div>
+</div>
+
+</body>
+</html>

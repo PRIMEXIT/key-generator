@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Your Access Key</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #141e30, #243b55);
+  color: #fff;
+}
+
+.container {
+  max-width: 420px;
+  margin: 100px auto;
+  background: rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+h1 {
+  font-size: 26px;
+  margin-bottom: 20px;
+}
+
+.key-box {
+  background: #000;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 22px;
+  letter-spacing: 2px;
+  margin: 20px 0;
+  user-select: all;
+}
+
+.note {
+  font-size: 13px;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>✅ Key Generated</h1>
+
+  <div class="key-box" id="key"></div>
+
+  <div class="note">
+    Copy this key and use it where required.
+  </div>
+</div>
+
+<script>
+  const key = "KEY-" + Math.floor(100000 + Math.random() * 900000);
+  document.getElementById("key").innerText = key;
+</script>
+
+</body>
+</html>
