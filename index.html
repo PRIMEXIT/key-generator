@@ -2,79 +2,215 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Premium Key Generator</title>
+<title>Access Key Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  color: #fff;
+* {
+  box-sizing: border-box;
 }
 
-.container {
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: radial-gradient(circle at top, #0f2027, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  perspective: 1200px;
+}
+
+/* 3D Card */
+.card {
+  width: 100%;
   max-width: 420px;
-  margin: 100px auto;
-  background: rgba(255,255,255,0.08);
-  border-radius: 16px;
-  padding: 40px;
+  background: linear-gradient(
+    145deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.03)
+  );
+  backdrop-filter: blur(18px);
+  border-radius: 22px;
+  padding: 42px 30px;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.8),
+    inset 0 0 40px rgba(255,255,255,0.05);
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease;
+}
+
+/* Logo */
+.logo {
+  width: 78px;
+  height: 78px;
+  margin: 0 auto 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00f2fe, #4facfe);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  font-weight: bold;
+  color: #000;
+  box-shadow: 0 0 35px rgba(79,172,254,0.9);
+  transform: translateZ(40px);
 }
 
 h1 {
-  font-size: 28px;
-  margin-bottom: 10px;
+  font-size: 26px;
+  margin: 12px 0;
+  transform: translateZ(30px);
 }
 
-p {
-  opacity: 0.85;
-  font-size: 15px;
+.subtitle {
+  font-size: 14px;
+  opacity: 0.75;
+  margin-bottom: 34px;
+  transform: translateZ(20px);
 }
 
+/* Button */
 .btn {
   display: inline-block;
-  margin-top: 30px;
-  padding: 15px 35px;
-  background: linear-gradient(90deg, #00c6ff, #0072ff);
-  color: #fff;
+  width: 100%;
+  padding: 18px;
+  border-radius: 60px;
+  background: linear-gradient(90deg, #00f2fe, #4facfe);
+  color: #000;
   text-decoration: none;
-  border-radius: 50px;
   font-size: 18px;
-  font-weight: 600;
-  transition: 0.3s;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow:
+    0 0 30px rgba(79,172,254,0.7),
+    0 10px 30px rgba(0,0,0,0.6);
+  transition: all 0.2s ease;
+  transform: translateZ(50px);
 }
 
 .btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px rgba(0,114,255,0.6);
+  transform: translateZ(60px) scale(1.05);
+  box-shadow:
+    0 0 45px rgba(79,172,254,1),
+    0 15px 40px rgba(0,0,0,0.8);
 }
 
-.footer {
-  margin-top: 30px;
+.btn:active {
+  transform: translateZ(40px) scale(0.98);
+}
+
+/* Info Pills */
+.info {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
   font-size: 12px;
-  opacity: 0.6;
+  opacity: 0.7;
+  transform: translateZ(15px);
+}
+
+.info span {
+  background: rgba(255,255,255,0.08);
+  padding: 7px 14px;
+  border-radius: 20px;
+}
+
+/* Footer */
+.footer {
+  margin-top: 32px;
+  font-size: 11px;
+  opacity: 0.4;
+  transform: translateZ(10px);
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <h1>Premium Key Generator</h1>
-  <p>Generate your access key by completing a simple verification step.</p>
+<div class="card" id="card">
+  <div class="logo">🔑</div>
 
-  <!-- SHORTENER LINK HERE -->
-  <a class="btn" href="PASTE_YOUR_SHORTENER_LINK_HERE">
+  <h1>Access Key Generator</h1>
+  <p class="subtitle">
+    Complete a quick verification to unlock your premium access key
+  </p>
+
+  <!-- 🔗 PUT YOUR SHORTENER LINK HERE -->
+  <a href="https://arolinks.com/wa89EB" class="btn" id="btn">
     Generate Key
   </a>
 
+  <div class="info">
+    <span>⚡ Fast</span>
+    <span>🔒 Secure</span>
+    <span>💎 Elite</span>
+  </div>
+
   <div class="footer">
-    Secure • Fast • Free
+    © 2026 • Next-Gen Access System
   </div>
 </div>
 
+<!-- 🔊 CLICK SOUND -->
+<audio id="clickSound">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-modern-click-box-check-1120.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* 3D tilt effect */
+const card = document.getElementById("card");
+
+document.addEventListener("mousemove", e => {
+  const x = (window.innerWidth / 2 - e.clientX) / 30;
+  const y = (window.innerHeight / 2 - e.clientY) / 30;
+  card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+});
+
+document.addEventListener("mouseleave", () => {
+  card.style.transform = "rotateY(0deg) rotateX(0deg)";
+});
+
+/* Button click sound */
+document.getElementById("btn").addEventListener("click", () => {
+  document.getElementById("clickSound").play();
+});
+
+/* 🔮 AI FEMALE WELCOME VOICE */
+let spoken = false;
+
+function speakWelcome() {
+  if (spoken) return;
+  spoken = true;
+
+  const msg = new SpeechSynthesisUtterance(
+    "Welcome to the premium key generator"
+  );
+
+  msg.rate = 0.85;   // cinematic slow
+  msg.pitch = 1.1;  // feminine tone
+  msg.volume = 1;
+
+  const voices = speechSynthesis.getVoices();
+  const femaleVoice = voices.find(v =>
+    v.name.toLowerCase().includes("female") ||
+    v.name.toLowerCase().includes("zira") ||
+    v.name.toLowerCase().includes("samantha")
+  );
+
+  if (femaleVoice) msg.voice = femaleVoice;
+
+  speechSynthesis.speak(msg);
+}
+
+/* Play welcome voice on first interaction */
+document.addEventListener("click", speakWelcome, { once: true });
+document.addEventListener("touchstart", speakWelcome, { once: true });
+</script>
+
 </body>
 </html>
+
 
