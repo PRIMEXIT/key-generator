@@ -155,42 +155,170 @@ function playBeep(){
   oscillator.start();
   oscillator.stop(audioCtx.currentTime + 0.05);
 }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PRIME X SHAITAN FF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* ===== REDIRECT ===== */
+<style>
+:root{
+  --green:#00ff9c;
+  --dark:#040b0f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--dark);
+  font-family:Consolas,monospace;
+  height:100vh;
+  overflow:hidden;
+  color:var(--green);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+.card{
+  width:100%;
+  max-width:430px;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(0,255,156,0.3);
+  border-radius:16px;
+  padding:30px;
+  box-shadow:0 0 60px rgba(0,255,156,0.3);
+  text-align:center;
+}
+.glitch{
+  font-size:22px;
+  margin-bottom:8px;
+  animation:glitch 1s infinite;
+}
+@keyframes glitch{
+  0%{text-shadow:2px 0 red,-2px 0 blue}
+  50%{text-shadow:-2px 0 red,2px 0 blue}
+  100%{text-shadow:2px 0 red,-2px 0 blue}
+}
+.subtitle{
+  opacity:0.7;
+  font-size:14px;
+  margin-bottom:20px;
+}
+.terminal{
+  background:#000;
+  border-radius:8px;
+  padding:12px;
+  height:140px;
+  overflow:hidden;
+  font-size:13px;
+  text-align:left;
+  margin-bottom:20px;
+  box-shadow:0 0 20px rgba(0,255,156,0.2);
+}
+.btn{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:50px;
+  background:var(--green);
+  color:#000;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  animation:pulse 1.5s infinite;
+  box-shadow:0 0 20px var(--green);
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 20px var(--green)}
+  50%{box-shadow:0 0 50px var(--green)}
+  100%{box-shadow:0 0 20px var(--green)}
+}
+.loader{
+  display:none;
+  margin-top:15px;
+  font-size:13px;
+}
+.warning{
+  color:red;
+  font-size:13px;
+  margin-top:10px;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="card">
+  <div class="glitch">PRIME X SHAITAN FF</div>
+  <p class="subtitle">Initializing encrypted cyber session...</p>
+  <div class="terminal" id="terminal"></div>
+  <button class="btn" onclick="startAccess()">ACCESS SYSTEM</button>
+  <div class="loader" id="loader">Redirecting securely...</div>
+  <div class="warning" id="warning">⚠ Developer tools detected!</div>
+</div>
+
+<!-- 🎵 BACKGROUND MUSIC -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="king-shit.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ===== SHORTENER LINK ===== */
+const SHORTENER_LINK = "https://arolinks.com/0X5pZ";
+
+/* ===== TERMINAL ANIMATION (NO BEEP) ===== */
+const terminal = document.getElementById("terminal");
+const lines = [
+  "Booting secure kernel...",
+  "Scanning system ports...",
+  "Injecting encrypted payload...",
+  "Bypassing firewall layer...",
+  "Generating secure token...",
+  "Access level: PREMIUM",
+  "Verification required..."
+];
+
+let i = 0;
+function typeLine(){
+  if(i < lines.length){
+    terminal.innerHTML += "> " + lines[i] + "<br>";
+    terminal.scrollTop = terminal.scrollHeight;
+    i++;
+    setTimeout(typeLine, 600);
+  }else{
+    terminal.innerHTML += "> Awaiting user input...<br>";
+  }
+}
+typeLine();
+
+/* ===== MUSIC CONTROL ===== */
+const music = document.getElementById("bgMusic");
+
+/* browser-safe: play after first tap */
+document.body.addEventListener("click", () => {
+  music.volume = 1.0;
+  music.play().catch(()=>{});
+}, { once:true });
+
+/* also start when ACCESS button pressed */
 function startAccess(){
+  music.volume = 1.0;
+  music.play().catch(()=>{});
   document.getElementById("loader").style.display="block";
   setTimeout(()=>{
     window.location.href = SHORTENER_LINK;
   },2000);
 }
-
-/* ===== LOUD AUTO MUSIC ===== */
-const music = document.getElementById("bgMusic");
-
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    music.muted = false;
-    music.volume = 1.0;   // max loud on open
-    music.play().catch(()=>{});
-  }, 300);
-});
-
-/* fallback if browser blocks sound */
-document.body.addEventListener("click", () => {
-  music.muted = false;
-  music.volume = 0.0;
-  music.play().catch(()=>{});
-
-  let v = 0;
-  const boost = setInterval(()=>{
-    if(v < 1.0){
-      v += 0.1;
-      music.volume = v;
-    }else{
-      clearInterval(boost);
-    }
-  }, 80);
-}, { once:true });
 
 /* ===== DEVTOOLS DETECTION ===== */
 setInterval(function(){
@@ -204,22 +332,28 @@ const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
 canvas.width = window.innerWidth;
+
 const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const fontSize = 14;
 const columns = canvas.width / fontSize;
 const drops = [];
+
 for(let x = 0; x < columns; x++) drops[x] = 1;
 
 function draw(){
   ctx.fillStyle = "rgba(4,11,15,0.05)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
   ctx.fillStyle = "#00ff9c";
   ctx.font = fontSize + "px monospace";
+
   for(let i = 0; i < drops.length; i++){
     const text = letters[Math.floor(Math.random()*letters.length)];
     ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
     if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
       drops[i] = 0;
+
     drops[i]++;
   }
 }
@@ -228,18 +362,3 @@ setInterval(draw, 35);
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
