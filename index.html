@@ -93,10 +93,57 @@ canvas{
   margin-top:10px;
   display:none;
 }
+
+/* ===== PROFILE BUTTON ADDED ===== */
+.profile-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid #00ff9c;
+  cursor:pointer;
+  z-index:999;
+  box-shadow:0 0 20px #00ff9c;
+  transition:0.3s;
+}
+.profile-btn:hover{transform:scale(1.1)}
+.profile-btn img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ABOUT POPUP */
+.about-box{
+  position:fixed;
+  top:90px;
+  left:20px;
+  background:rgba(0,0,0,0.9);
+  border:1px solid #00ff9c;
+  padding:15px 20px;
+  border-radius:12px;
+  color:#00ff9c;
+  display:none;
+  font-size:14px;
+  box-shadow:0 0 20px #00ff9c;
+  z-index:999;
+}
 </style>
 </head>
 
 <body>
+
+<!-- ===== PROFILE BUTTON (TOP LEFT) ===== -->
+<div class="profile-btn" onclick="openAbout()">
+  <img src="profile.jpg" alt="profile">
+</div>
+
+<div class="about-box" id="aboutBox">
+  MADE BY @PR1ME XIS
+</div>
 
 <canvas id="matrix"></canvas>
 
@@ -109,17 +156,29 @@ canvas{
   <div class="warning" id="warning">⚠ Developer tools detected!</div>
 </div>
 
-<!-- 🎵 BACKGROUND MUSIC -->
+<!-- BACKGROUND MUSIC -->
 <audio id="bgMusic" loop preload="auto">
   <source src="king-shit.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
+/* TELEGRAM LINK */
+const TELEGRAM_LINK = "https://t.me/@PR1ME XIS";
+
+/* PROFILE CLICK */
+function openAbout(){
+  const box = document.getElementById("aboutBox");
+  box.style.display = "block";
+  setTimeout(()=>{
+    window.location.href = TELEGRAM_LINK;
+  },1500);
+}
+
 /* ===== SHORTENER LINK ===== */
 const SHORTENER_LINK = "https://linkpays.in/oXAI";
 
-/* ===== TERMINAL ANIMATION (NO BEEP) ===== */
+/* TERMINAL ANIMATION */
 const terminal = document.getElementById("terminal");
 const lines = [
   "Booting secure kernel...",
@@ -144,16 +203,13 @@ function typeLine(){
 }
 typeLine();
 
-/* ===== MUSIC CONTROL ===== */
+/* MUSIC CONTROL */
 const music = document.getElementById("bgMusic");
-
-/* browser-safe: play after first tap */
 document.body.addEventListener("click", () => {
   music.volume = 1.0;
   music.play().catch(()=>{});
 }, { once:true });
 
-/* also start when ACCESS button pressed */
 function startAccess(){
   music.volume = 1.0;
   music.play().catch(()=>{});
@@ -163,14 +219,14 @@ function startAccess(){
   },2000);
 }
 
-/* ===== DEVTOOLS DETECTION ===== */
+/* DEVTOOLS DETECTION */
 setInterval(function(){
   if(window.outerWidth - window.innerWidth > 160){
     document.getElementById("warning").style.display="block";
   }
 },1000);
 
-/* ===== MATRIX EFFECT ===== */
+/* MATRIX EFFECT */
 const canvas = document.getElementById("matrix");
 const ctx = canvas.getContext("2d");
 canvas.height = window.innerHeight;
@@ -205,19 +261,3 @@ setInterval(draw, 35);
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
