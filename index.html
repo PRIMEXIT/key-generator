@@ -11,6 +11,7 @@
   --dark:#040b0f;
 }
 *{box-sizing:border-box;margin:0;padding:0}
+
 body{
   background:var(--dark);
   font-family:Consolas,monospace;
@@ -21,12 +22,14 @@ body{
   justify-content:center;
   align-items:center;
 }
+
 canvas{
   position:fixed;
   top:0;
   left:0;
   z-index:-1;
 }
+
 .card{
   width:100%;
   max-width:430px;
@@ -38,21 +41,25 @@ canvas{
   box-shadow:0 0 60px rgba(0,255,156,0.3);
   text-align:center;
 }
+
 .glitch{
   font-size:22px;
   margin-bottom:8px;
   animation:glitch 1s infinite;
 }
+
 @keyframes glitch{
   0%{text-shadow:2px 0 red,-2px 0 blue}
   50%{text-shadow:-2px 0 red,2px 0 blue}
   100%{text-shadow:2px 0 red,-2px 0 blue}
 }
+
 .subtitle{
   opacity:0.7;
   font-size:14px;
   margin-bottom:20px;
 }
+
 .terminal{
   background:#000;
   border-radius:8px;
@@ -64,6 +71,7 @@ canvas{
   margin-bottom:20px;
   box-shadow:0 0 20px rgba(0,255,156,0.2);
 }
+
 .btn{
   width:100%;
   padding:14px;
@@ -77,16 +85,19 @@ canvas{
   animation:pulse 1.5s infinite;
   box-shadow:0 0 20px var(--green);
 }
+
 @keyframes pulse{
   0%{box-shadow:0 0 20px var(--green)}
   50%{box-shadow:0 0 50px var(--green)}
   100%{box-shadow:0 0 20px var(--green)}
 }
+
 .loader{
   display:none;
   margin-top:15px;
   font-size:13px;
 }
+
 .warning{
   color:red;
   font-size:13px;
@@ -94,7 +105,7 @@ canvas{
   display:none;
 }
 
-/* ===== PROFILE BUTTON ADDED ===== */
+/* PROFILE BUTTON */
 .profile-btn{
   position:fixed;
   top:20px;
@@ -107,9 +118,7 @@ canvas{
   cursor:pointer;
   z-index:999;
   box-shadow:0 0 20px #00ff9c;
-  transition:0.3s;
 }
-.profile-btn:hover{transform:scale(1.1)}
 .profile-btn img{
   width:100%;
   height:100%;
@@ -127,16 +136,41 @@ canvas{
   border-radius:12px;
   color:#00ff9c;
   display:none;
-  font-size:14px;
   box-shadow:0 0 20px #00ff9c;
   z-index:999;
+}
+
+/* MULTIPLE LINK POPUP */
+.link-popup{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  background:rgba(0,0,0,0.95);
+  border:1px solid #00ff9c;
+  padding:25px;
+  border-radius:14px;
+  display:none;
+  z-index:1000;
+  box-shadow:0 0 40px #00ff9c;
+  text-align:center;
+}
+.link-btn{
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  background:#00ff9c;
+  color:#000;
+  text-decoration:none;
+  border-radius:8px;
+  font-weight:bold;
 }
 </style>
 </head>
 
 <body>
 
-<!-- ===== PROFILE BUTTON (TOP LEFT) ===== -->
+<!-- PROFILE BUTTON -->
 <div class="profile-btn" onclick="openAbout()">
   <img src="profile.jpg" alt="profile">
 </div>
@@ -156,10 +190,18 @@ canvas{
   <div class="warning" id="warning">⚠ Developer tools detected!</div>
 </div>
 
-<!-- BACKGROUND MUSIC -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="king-shit.mp3" type="audio/mpeg">
-</audio>
+<!-- MULTIPLE ACCESS LINKS -->
+<div class="link-popup" id="linkPopup">
+  <h3>Select Access Link</h3>
+  <a class="link-btn" href="https://linkpays.in/link1">Access Link 1</a>
+  <a class="link-btn" href="https://linkpays.in/link2">Access Link 2</a>
+  <a class="link-btn" href="https://linkpays.in/link3">Access Link 3</a>
+  <a class="link-btn" href="https://linkpays.in/link4">Access Link 4</a>
+  <a class="link-btn" href="https://linkpays.in/link5">Access Link 5</a>
+</div>
+
+<!-- MUSIC -->
+<audio id="bgMusic" loop preload="auto" src="king-shit.mp3"></audio>
 
 <script>
 
@@ -168,99 +210,84 @@ const TELEGRAM_LINK = "https://t.me/PRIME_XIS";
 
 /* PROFILE CLICK */
 function openAbout(){
-  const box = document.getElementById("aboutBox");
-  box.style.display = "block";
-  setTimeout(()=>{
-    window.location.href = TELEGRAM_LINK;
-  },1500);
+  document.getElementById("aboutBox").style.display="block";
+  setTimeout(()=>{window.location.href=TELEGRAM_LINK;},1500);
 }
-
-/* ===== SHORTENER LINK ===== */
-const SHORTENER_LINK = "https://linkpays.in/oXAI";
 
 /* TERMINAL ANIMATION */
-const terminal = document.getElementById("terminal");
-const lines = [
-  "Booting secure kernel...",
-  "Scanning system ports...",
-  "Injecting encrypted payload...",
-  "Bypassing firewall layer...",
-  "Generating secure token...",
-  "Access level: PREMIUM",
-  "Verification required..."
+const terminal=document.getElementById("terminal");
+const lines=[
+"Booting secure kernel...",
+"Scanning system ports...",
+"Injecting encrypted payload...",
+"Bypassing firewall layer...",
+"Generating secure token...",
+"Access level: PREMIUM",
+"Verification required..."
 ];
 
-let i = 0;
+let i=0;
 function typeLine(){
-  if(i < lines.length){
-    terminal.innerHTML += "> " + lines[i] + "<br>";
-    terminal.scrollTop = terminal.scrollHeight;
-    i++;
-    setTimeout(typeLine, 600);
-  }else{
-    terminal.innerHTML += "> Awaiting user input...<br>";
-  }
-}
+if(i<lines.length){
+terminal.innerHTML+="> "+lines[i]+"<br>";
+terminal.scrollTop=terminal.scrollHeight;
+i++;
+setTimeout(typeLine,600);
+}else{
+terminal.innerHTML+="> Awaiting user input...<br>";
+}}
 typeLine();
 
-/* MUSIC CONTROL */
-const music = document.getElementById("bgMusic");
-document.body.addEventListener("click", () => {
-  music.volume = 1.0;
-  music.play().catch(()=>{});
-}, { once:true });
+/* MUSIC */
+const music=document.getElementById("bgMusic");
+document.body.addEventListener("click",()=>{
+music.volume=1;
+music.play().catch(()=>{});
+},{once:true});
 
+/* ACCESS BUTTON */
 function startAccess(){
-  music.volume = 1.0;
-  music.play().catch(()=>{});
-  document.getElementById("loader").style.display="block";
-  setTimeout(()=>{
-    window.location.href = SHORTENER_LINK;
-  },2000);
+music.play().catch(()=>{});
+document.getElementById("loader").style.display="block";
+
+setTimeout(()=>{
+document.getElementById("linkPopup").style.display="block";
+},2000);
 }
 
 /* DEVTOOLS DETECTION */
-setInterval(function(){
-  if(window.outerWidth - window.innerWidth > 160){
-    document.getElementById("warning").style.display="block";
-  }
-},1000);
+setInterval(()=>{
+if(window.outerWidth-window.innerWidth>160){
+document.getElementById("warning").style.display="block";
+}},1000);
 
 /* MATRIX EFFECT */
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+canvas.height=window.innerHeight;
+canvas.width=window.innerWidth;
 
-const letters = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize = 14;
-const columns = canvas.width / fontSize;
-const drops = [];
+const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+const drops=[];
 
-for(let x = 0; x < columns; x++) drops[x] = 1;
+for(let x=0;x<columns;x++)drops[x]=1;
 
 function draw(){
-  ctx.fillStyle = "rgba(4,11,15,0.05)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.fillStyle="rgba(4,11,15,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#00ff9c";
+ctx.font=fontSize+"px monospace";
 
-  ctx.fillStyle = "#00ff9c";
-  ctx.font = fontSize + "px monospace";
-
-  for(let i = 0; i < drops.length; i++){
-    const text = letters[Math.floor(Math.random()*letters.length)];
-    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-
-    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975)
-      drops[i] = 0;
-
-    drops[i]++;
-  }
-}
-setInterval(draw, 35);
+for(let i=0;i<drops.length;i++){
+const text=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
+drops[i]++;
+}}
+setInterval(draw,35);
 
 </script>
 </body>
 </html>
-
-
-
