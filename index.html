@@ -23,6 +23,7 @@ body{
 }
 canvas{position:fixed;top:0;left:0;z-index:-1}
 
+/* card */
 .card{
   width:100%;
   max-width:430px;
@@ -35,6 +36,7 @@ canvas{position:fixed;top:0;left:0;z-index:-1}
   text-align:center;
 }
 
+/* glitch title */
 .glitch{font-size:22px;margin-bottom:8px;animation:glitch 1s infinite}
 @keyframes glitch{
 0%{text-shadow:2px 0 red,-2px 0 blue}
@@ -44,42 +46,63 @@ canvas{position:fixed;top:0;left:0;z-index:-1}
 
 .subtitle{opacity:0.7;font-size:14px;margin-bottom:20px}
 
+/* terminal */
 .terminal{
 background:#000;border-radius:8px;padding:12px;height:140px;
 overflow:hidden;font-size:13px;text-align:left;margin-bottom:20px;
 }
 
+/* buttons */
 .btn{
 width:100%;padding:14px;border:none;border-radius:50px;
 background:var(--green);color:#000;font-weight:bold;font-size:15px;
 cursor:pointer;margin-top:8px;
 }
 
-/* profile */
+/* profile button */
 .profile-btn{
 position:fixed;top:20px;left:20px;width:60px;height:60px;border-radius:50%;
 overflow:hidden;border:2px solid #00ff9c;cursor:pointer;z-index:999;
 }
 .profile-btn img{width:100%;height:100%;object-fit:cover}
 
+/* about popup */
 .about-box{
 position:fixed;top:90px;left:20px;background:#000;border:1px solid #00ff9c;
 padding:15px;border-radius:10px;display:none;
 }
 
-/* admin button */
+/* ===== YELLOW ADMIN BUTTON ===== */
 .admin-btn{
-position:fixed;top:20px;right:20px;width:40px;height:40px;
-background:#000;border:2px solid #00ff9c;cursor:pointer;z-index:999;
+position:fixed;
+top:20px;
+right:20px;
+width:70px;
+height:40px;
+background:yellow;
+color:black;
+border-radius:6px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+cursor:pointer;
+z-index:999;
+box-shadow:0 0 10px yellow;
+transition:0.3s;
 }
+.admin-btn:hover{transform:scale(1.1)}
 
-/* popup */
+/* popup boxes */
 .popup{
 position:fixed;top:80px;right:20px;background:#000;border:1px solid #00ff9c;
 padding:15px;border-radius:10px;display:none;z-index:999;width:250px;
 }
 
-input{width:100%;padding:8px;margin:5px 0;background:#111;color:#00ff9c;border:1px solid #00ff9c}
+input{
+width:100%;padding:8px;margin:5px 0;background:#111;
+color:#00ff9c;border:1px solid #00ff9c
+}
 </style>
 </head>
 
@@ -93,7 +116,7 @@ input{width:100%;padding:8px;margin:5px 0;background:#111;color:#00ff9c;border:1
 <div class="about-box" id="aboutBox">MADE BY @PRIME_XIS</div>
 
 <!-- ADMIN BUTTON -->
-<div class="admin-btn" onclick="openAdmin()"></div>
+<div class="admin-btn" onclick="openAdmin()">ADMIN</div>
 
 <!-- ADMIN LOGIN -->
 <div class="popup" id="loginBox">
@@ -142,7 +165,7 @@ input{width:100%;padding:8px;margin:5px 0;background:#111;color:#00ff9c;border:1
 /* TELEGRAM */
 const TELEGRAM_LINK="https://t.me/PRIME_XIS";
 
-/* PROFILE CLICK */
+/* profile click */
 function openAbout(){
 document.getElementById("aboutBox").style.display="block";
 setTimeout(()=>window.location.href=TELEGRAM_LINK,1500);
@@ -150,7 +173,7 @@ setTimeout(()=>window.location.href=TELEGRAM_LINK,1500);
 
 /* ===== 5 ADMINS ===== */
 const ADMINS=[
-{user:"Shaitan ff",pass:"777"},
+{user:"SHAITAN",pass:"7777"},
 {user:"admin2",pass:"2222"},
 {user:"admin3",pass:"3333"},
 {user:"admin4",pass:"4444"},
@@ -172,7 +195,7 @@ loadLinks();
 }else alert("Wrong login");
 }
 
-/* LINKS STORAGE */
+/* link storage */
 let links=JSON.parse(localStorage.getItem("links"))||[
 "https://link1.com",
 "https://link2.com",
@@ -195,7 +218,7 @@ localStorage.setItem("links",JSON.stringify(links));
 alert("Saved");
 }
 
-/* ACCESS BUTTON */
+/* access button */
 function startAccess(){
 document.getElementById("linkBox").style.display="block";
 bgMusic.play().catch(()=>{});
@@ -205,7 +228,7 @@ function go(i){
 window.location.href=links[i];
 }
 
-/* TERMINAL */
+/* terminal animation */
 const terminal=document.getElementById("terminal");
 const lines=[
 "Booting secure kernel...",
@@ -225,7 +248,7 @@ i++;setTimeout(typeLine,600);
 }
 typeLine();
 
-/* MATRIX */
+/* matrix effect */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 canvas.height=innerHeight;
