@@ -72,7 +72,7 @@ position:fixed;top:90px;left:20px;background:#000;border:1px solid #00ff9c;
 padding:15px;border-radius:10px;display:none;
 }
 
-/* ===== YELLOW ADMIN BUTTON ===== */
+/* ADMIN BUTTON */
 .admin-btn{
 position:fixed;
 top:20px;
@@ -93,7 +93,6 @@ transition:0.3s;
 }
 .admin-btn:hover{transform:scale(1.1)}
 
-/* popup boxes */
 .popup{
 position:fixed;top:80px;right:20px;background:#000;border:1px solid #00ff9c;
 padding:15px;border-radius:10px;display:none;z-index:999;width:250px;
@@ -156,7 +155,7 @@ color:#00ff9c;border:1px solid #00ff9c
 <button class="btn" onclick="startAccess()">ACCESS SYSTEM</button>
 </div>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" loop autoplay>
 <source src="king-shit.mp3">
 </audio>
 
@@ -171,14 +170,16 @@ document.getElementById("aboutBox").style.display="block";
 setTimeout(()=>window.location.href=TELEGRAM_LINK,1500);
 }
 
-/* ===== 5 ADMINS ===== */
+/* ===== 5 ADMINS WITH LINK PERMISSION ===== */
 const ADMINS=[
-{user:"SHAITAN",pass:"7777"},
-{user:"admin2",pass:"2222"},
-{user:"admin3",pass:"3333"},
-{user:"admin4",pass:"4444"},
-{user:"admin5",pass:"5555"}
+{user:"SHAITAN",pass:"7777",linkIndex:0},
+{user:"admin2",pass:"2222",linkIndex:1},
+{user:"admin3",pass:"3333",linkIndex:2},
+{user:"admin4",pass:"4444",linkIndex:3},
+{user:"admin5",pass:"5555",linkIndex:4}
 ];
+
+let currentAdminLink=null;
 
 function openAdmin(){
 document.getElementById("loginBox").style.display="block";
@@ -187,8 +188,11 @@ document.getElementById("loginBox").style.display="block";
 function adminLogin(){
 const u=adminUser.value;
 const p=adminPass.value;
+
 const ok=ADMINS.find(a=>a.user===u && a.pass===p);
+
 if(ok){
+currentAdminLink=ok.linkIndex;
 loginBox.style.display="none";
 editBox.style.display="block";
 loadLinks();
@@ -205,6 +209,16 @@ let links=JSON.parse(localStorage.getItem("links"))||[
 ];
 
 function loadLinks(){
+
+const inputs=[l1,l2,l3,l4,l5];
+
+// disable all
+inputs.forEach(i=>i.disabled=true);
+
+// enable only allowed
+inputs[currentAdminLink].disabled=false;
+
+// load values
 l1.value=links[0];
 l2.value=links[1];
 l3.value=links[2];
@@ -213,7 +227,8 @@ l5.value=links[4];
 }
 
 function saveLinks(){
-links=[l1.value,l2.value,l3.value,l4.value,l5.value];
+const inputs=[l1,l2,l3,l4,l5];
+links[currentAdminLink]=inputs[currentAdminLink].value;
 localStorage.setItem("links",JSON.stringify(links));
 alert("Saved");
 }
@@ -227,6 +242,13 @@ bgMusic.play().catch(()=>{});
 function go(i){
 window.location.href=links[i];
 }
+
+/* AUTO PLAY MUSIC ON PAGE LOAD */
+window.addEventListener("load",()=>{
+bgMusic.play().catch(()=>{
+document.body.addEventListener("click",()=>bgMusic.play(),{once:true});
+});
+});
 
 /* terminal animation */
 const terminal=document.getElementById("terminal");
@@ -276,4 +298,3 @@ setInterval(draw,35);
 </script>
 </body>
 </html>
-
