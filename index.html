@@ -182,13 +182,12 @@ const ADMINS=[
 let currentAdminLink=null;
 
 function openAdmin(){
-document.getElementById("loginBox").style.display="block";
+loginBox.style.display="block";
 }
 
 function adminLogin(){
 const u=adminUser.value;
 const p=adminPass.value;
-
 const ok=ADMINS.find(a=>a.user===u && a.pass===p);
 
 if(ok){
@@ -209,13 +208,12 @@ let links=JSON.parse(localStorage.getItem("links"))||[
 ];
 
 function loadLinks(){
-
 const inputs=[l1,l2,l3,l4,l5];
 
-// disable all
+// disable all inputs
 inputs.forEach(i=>i.disabled=true);
 
-// enable only allowed
+// enable only allowed link
 inputs[currentAdminLink].disabled=false;
 
 // load values
@@ -226,16 +224,22 @@ l4.value=links[3];
 l5.value=links[4];
 }
 
+/* SAVE + CLOSE EDIT BOX */
 function saveLinks(){
 const inputs=[l1,l2,l3,l4,l5];
+
 links[currentAdminLink]=inputs[currentAdminLink].value;
 localStorage.setItem("links",JSON.stringify(links));
+
 alert("Saved");
+
+// close edit box automatically
+editBox.style.display="none";
 }
 
 /* access button */
 function startAccess(){
-document.getElementById("linkBox").style.display="block";
+linkBox.style.display="block";
 bgMusic.play().catch(()=>{});
 }
 
