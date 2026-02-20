@@ -179,17 +179,135 @@ const ADMINS=[
 {user:"admin5",pass:"5555",linkIndex:4}
 ];
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PRIME XIS ON TOP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root{
+  --green:#00ff9c;
+  --dark:#040b0f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--dark);
+  font-family:Consolas,monospace;
+  height:100vh;
+  overflow:hidden;
+  color:var(--green);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+canvas{position:fixed;top:0;left:0;z-index:-1}
+
+.card{
+  width:100%;
+  max-width:430px;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(0,255,156,0.3);
+  border-radius:16px;
+  padding:30px;
+  box-shadow:0 0 60px rgba(0,255,156,0.3);
+  text-align:center;
+}
+
+.glitch{font-size:22px;margin-bottom:8px;animation:glitch 1s infinite}
+@keyframes glitch{
+0%{text-shadow:2px 0 red,-2px 0 blue}
+50%{text-shadow:-2px 0 red,2px 0 blue}
+100%{text-shadow:2px 0 red,-2px 0 blue}
+}
+
+.subtitle{opacity:0.7;font-size:14px;margin-bottom:20px}
+.terminal{background:#000;border-radius:8px;padding:12px;height:140px;overflow:hidden;font-size:13px;text-align:left;margin-bottom:20px}
+
+.btn{width:100%;padding:14px;border:none;border-radius:50px;background:var(--green);color:#000;font-weight:bold;font-size:15px;cursor:pointer;margin-top:8px}
+
+.profile-btn{position:fixed;top:20px;left:20px;width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid #00ff9c;cursor:pointer;z-index:999}
+.profile-btn img{width:100%;height:100%;object-fit:cover}
+
+.about-box{position:fixed;top:90px;left:20px;background:#000;border:1px solid #00ff9c;padding:15px;border-radius:10px;display:none}
+
+.admin-btn{position:fixed;top:20px;right:20px;width:70px;height:40px;background:yellow;color:black;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:bold;cursor:pointer;z-index:999;box-shadow:0 0 10px yellow}
+
+.popup{position:fixed;top:80px;right:20px;background:#000;border:1px solid #00ff9c;padding:15px;border-radius:10px;display:none;z-index:999;width:250px}
+
+input{width:100%;padding:8px;margin:5px 0;background:#111;color:#00ff9c;border:1px solid #00ff9c}
+</style>
+</head>
+
+<body>
+
+<div class="profile-btn" onclick="openAbout()">
+<img src="profile.jpg">
+</div>
+
+<div class="about-box" id="aboutBox">MADE BY @PRIME_XIS</div>
+
+<div class="admin-btn" onclick="openAdmin()">ADMIN</div>
+
+<div class="popup" id="loginBox">
+<h3>Admin Login</h3>
+<input id="adminUser" placeholder="username">
+<input id="adminPass" type="password" placeholder="password">
+<button class="btn" onclick="adminLogin()">Login</button>
+</div>
+
+<div class="popup" id="editBox">
+<h3>Edit Links</h3>
+<input id="l1"><input id="l2"><input id="l3"><input id="l4"><input id="l5">
+<button class="btn" onclick="saveLinks()">Save</button>
+</div>
+
+<div class="popup" id="linkBox">
+<h3>Select Link</h3>
+<button class="btn" onclick="go(0)">Link 1</button>
+<button class="btn" onclick="go(1)">Link 2</button>
+<button class="btn" onclick="go(2)">Link 3</button>
+<button class="btn" onclick="go(3)">Link 4</button>
+<button class="btn" onclick="go(4)">Link 5</button>
+</div>
+
+<canvas id="matrix"></canvas>
+
+<div class="card">
+<div class="glitch">PRIME XIS ON TOP</div>
+<p class="subtitle">Initializing encrypted cyber session...</p>
+<div class="terminal" id="terminal"></div>
+<button class="btn" onclick="startAccess()">ACCESS SYSTEM</button>
+</div>
+
+<script>
+
+/* TELEGRAM */
+const TELEGRAM_LINK="https://t.me/PRIME_XIS";
+function openAbout(){
+document.getElementById("aboutBox").style.display="block";
+setTimeout(()=>window.location.href=TELEGRAM_LINK,1500);
+}
+
+/* ADMINS */
+const ADMINS=[
+{user:"SHAITAN",pass:"7777",linkIndex:0},
+{user:"KRISHNA",pass:"7777",linkIndex:1},
+{user:"DENO",pass:"7777",linkIndex:2},
+{user:"SURAJ",pass:"7777",linkIndex:3},
+{user:"admin5",pass:"5555",linkIndex:4}
+];
+
 let currentAdminLink=null;
 
-function openAdmin(){
-loginBox.style.display="block";
-}
+function openAdmin(){ loginBox.style.display="block"; }
 
 function adminLogin(){
 const u=adminUser.value;
 const p=adminPass.value;
 const ok=ADMINS.find(a=>a.user===u && a.pass===p);
-
 if(ok){
 currentAdminLink=ok.linkIndex;
 loginBox.style.display="none";
@@ -198,8 +316,8 @@ loadLinks();
 }else alert("Wrong login");
 }
 
-/* link storage */
-let links=JSON.parse(localStorage.getItem("links"))||[
+/* GLOBAL LINKS (firebase will replace values) */
+window.links=[
 "https://link1.com",
 "https://link2.com",
 "https://link3.com",
@@ -209,97 +327,83 @@ let links=JSON.parse(localStorage.getItem("links"))||[
 
 function loadLinks(){
 const inputs=[l1,l2,l3,l4,l5];
-
-// disable all inputs
 inputs.forEach(i=>i.disabled=true);
-
-// enable only allowed link
 inputs[currentAdminLink].disabled=false;
-
-// load values
-l1.value=links[0];
-l2.value=links[1];
-l3.value=links[2];
-l4.value=links[3];
-l5.value=links[4];
+l1.value=window.links[0];
+l2.value=window.links[1];
+l3.value=window.links[2];
+l4.value=window.links[3];
+l5.value=window.links[4];
 }
 
-/* SAVE + CLOSE EDIT BOX */
 function saveLinks(){
 const inputs=[l1,l2,l3,l4,l5];
-
-links[currentAdminLink]=inputs[currentAdminLink].value;
-localStorage.setItem("links",JSON.stringify(links));
-
-alert("Saved");
-
-// close edit box automatically
+window.links[currentAdminLink]=inputs[currentAdminLink].value;
+saveLinksGlobal();
+alert("Saved for everyone!");
 editBox.style.display="none";
 }
 
-/* access button */
-function startAccess(){
-linkBox.style.display="block";
-bgMusic.play().catch(()=>{});
-}
+function startAccess(){ linkBox.style.display="block"; }
 
-function go(i){
-window.location.href=links[i];
-}
-
-/* AUTO PLAY MUSIC ON PAGE LOAD */
-window.addEventListener("load",()=>{
-bgMusic.play().catch(()=>{
-document.body.addEventListener("click",()=>bgMusic.play(),{once:true});
-});
-});
+function go(i){ window.location.href=window.links[i]; }
 
 /* terminal animation */
 const terminal=document.getElementById("terminal");
-const lines=[
-"Booting secure kernel...",
-"Scanning system ports...",
-"Injecting encrypted payload...",
-"Bypassing firewall layer...",
-"Generating secure token...",
-"Access level: PREMIUM",
-"Verification required..."
-];
+const lines=["Booting secure kernel...","Scanning system ports...","Injecting encrypted payload...","Bypassing firewall layer...","Generating secure token...","Access level: PREMIUM","Verification required..."];
 let i=0;
-function typeLine(){
-if(i<lines.length){
-terminal.innerHTML+="> "+lines[i]+"<br>";
-i++;setTimeout(typeLine,600);
-}
-}
+function typeLine(){ if(i<lines.length){terminal.innerHTML+="> "+lines[i]+"<br>";i++;setTimeout(typeLine,600);} }
 typeLine();
 
-/* matrix effect */
+/* matrix */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
-canvas.height=innerHeight;
-canvas.width=innerWidth;
+canvas.height=innerHeight;canvas.width=innerWidth;
 const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize=14;
-const columns=canvas.width/fontSize;
-const drops=[];
+const fontSize=14;const columns=canvas.width/fontSize;const drops=[];
 for(let x=0;x<columns;x++)drops[x]=1;
-
 function draw(){
 ctx.fillStyle="rgba(4,11,15,0.05)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="#00ff9c";
-ctx.font=fontSize+"px monospace";
+ctx.fillStyle="#00ff9c";ctx.font=fontSize+"px monospace";
 for(let i=0;i<drops.length;i++){
 const text=letters[Math.floor(Math.random()*letters.length)];
 ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-if(drops[i]*fontSize>canvas.height && Math.random()>0.975)drops[i]=0;
-drops[i]++;
-}
+if(drops[i]*fontSize>canvas.height&&Math.random()>0.975)drops[i]=0;
+drops[i]++;}
 }
 setInterval(draw,35);
 
 </script>
+
+<!-- FIREBASE GLOBAL SYSTEM -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+const firebaseConfig={
+apiKey:"AIzaSyAH3ZxOHX8RjqmrvtE5HYaX0SKXE2-b3wY",
+authDomain:"prime-xis.firebaseapp.com",
+databaseURL:"https://prime-xis-default-rtdb.firebaseio.com/",
+projectId:"prime-xis",
+storageBucket:"prime-xis.firebasestorage.app",
+messagingSenderId:"920030970542",
+appId:"1:920030970542:web:512a724573156b18a2a33f"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getDatabase(app);
+
+onValue(ref(db,"links"),(snapshot)=>{
+if(snapshot.exists()) window.links=snapshot.val();
+else set(ref(db,"links"),window.links);
+});
+
+window.saveLinksGlobal=function(){
+set(ref(db,"links"),window.links);
+};
+</script>
+
 </body>
 </html>
 
